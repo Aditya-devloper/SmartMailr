@@ -7,11 +7,14 @@ export const POST = async (req: Request) => {
     const data = await req.json();
     console.log("Clerk webhook recieved", data);
 
-    const { first_name, last_name, image_url, id } = data.data;
+    const { first_name, last_name, image_url, id, email_addresses } = data.data;
+
+    const email = email_addresses?.[0]?.email_address;
 
     await db.user.create({
       data: {
-        emailAddress: "example@example.org",
+        id: id,
+        emailAddress: email,
         firstName: first_name,
         lastName: last_name,
         imageUrl: image_url,
